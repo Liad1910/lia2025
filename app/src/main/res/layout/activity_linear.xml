@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#B28CF4"
+    tools:context=".activity_linear">
+
+    <!-- חלק עליון -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/black"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hi girllll"
+            android:textColor="#F7F4F8"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <!-- אזור הוספת התמונות הדינאמיות -->
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center" />
+
+    <!-- תמונות סטטיות -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="182dp"
+            android:layout_gravity="bottom"
+            android:src="@drawable/img_2" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="182dp"
+            android:layout_gravity="bottom"
+            android:src="@drawable/img_4" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="182dp"
+            android:layout_gravity="bottom"
+            android:src="@drawable/img_3" />
+    </LinearLayout>
+
+    <!-- כפתור חזרה -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:gravity="center_horizontal"
+            android:text="i want to be a boy"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+</LinearLayout>
+
