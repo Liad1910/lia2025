@@ -1,15 +1,13 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -18,34 +16,31 @@ public class MainActivity extends AppCompatActivity {
     private static final int TERMS_REQUEST_CODE = 1;
 
     Button button1, button2, linear, boy, game, taknonButton;
-    Switch switch1;
     ConstraintLayout constraintLayout;
-    ImageView imageView, imageView1;
-    SeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // אתחול רכיבים
+
         constraintLayout = findViewById(R.id.constraintLayout);
         game = findViewById(R.id.game);
         taknonButton = findViewById(R.id.startButton);
-        linear = findViewById(R.id.linear); // נוספו!
-        boy = findViewById(R.id.boy); // נוספו!
+        linear = findViewById(R.id.linear);
+        boy = findViewById(R.id.boy);
 
-        // השבתת כפתור המשחק כברירת מחדל
+
         game.setEnabled(false);
 
-        // הגדרת האזנה ללחיצה על כפתור התקנון
+
         taknonButton.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, activity_taknon.class);
             startActivityForResult(intent, TERMS_REQUEST_CODE);
             game.setEnabled(true);
         });
 
-        // אתחול הכפתורים הנוספים
+
         initViews();
     }
 
@@ -58,22 +53,47 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(view ->
                 Toast.makeText(MainActivity.this, "YOU SMART", Toast.LENGTH_SHORT).show());
 
-        // מעבר ל-activity של ה-Girl
+
         linear.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, activity_linear.class);
             startActivity(intent);
         });
 
-        // מעבר ל-activity של ה-Boy
+
         boy.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, activity_boy.class);
             startActivity(intent);
         });
 
-        // מעבר ל-activity של המשחק
+
         game.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, activity_game.class);
             startActivityForResult(intent, START_GAME);
         });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_home) {
+            Toast.makeText(this, "עברתם לדף הראשי", Toast.LENGTH_SHORT).show();
+
+        } else if (id == R.id.action_page1) {
+            Toast.makeText(this, "עברתם לדף אחד", Toast.LENGTH_SHORT).show();
+
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 }
