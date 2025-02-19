@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +41,7 @@ public class NewActivity extends AppCompatActivity {
                 }
 
                 public void onFinish() {
-                    Intent intent = new Intent(NewActivity.this, NextActivity.class);
+                    Intent intent = new Intent(NewActivity.this, nex.class);
                     startActivity(intent);
                 }
             }.start();
