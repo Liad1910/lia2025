@@ -13,39 +13,47 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class NewActivity extends AppCompatActivity {
 
+    private ImageView timerImage;
+
+    final int[] images = {
+            R.drawable.number_5,
+            R.drawable.number_4,
+            R.drawable.number_3,
+            R.drawable.number_2,
+            R.drawable.number_1
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
 
-            ImageView timerImage = findViewById(R.id.timer_image);
 
-            final int[] images = {
-                    R.drawable.number_5,
-                    R.drawable.number_4,
-                    R.drawable.number_3,
-                    R.drawable.number_2,
-                    R.drawable.number_1
-            };
 
-            new CountDownTimer(5000, 1000) {
-                int i = 0;
-                public void onTick(long millisUntilFinished) {
+
+
+        new CountDownTimer(5000, 1000) {
+            int i = 0;
+
+            public void onTick(long millisUntilFinished) {
+                if (i < images.length) {
                     timerImage.setImageResource(images[i]);
                     i++;
                 }
+            }
 
-                public void onFinish() {
-                    Intent intent = new Intent(NewActivity.this, nex.class);
-                    startActivity(intent);
-                }
-            }.start();
-        }
-        });
+            public void onFinish() {
+                Intent intent = new Intent(NewActivity.this, NextActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }.start();
     }
 }
