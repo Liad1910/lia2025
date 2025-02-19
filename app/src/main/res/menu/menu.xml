@@ -11,4 +11,11 @@
         android:title="דף אחד"
         android:orderInCategory="100"
         app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/new_item"
+            android:title="New Item"
+            android:icon="@android:drawable/ic_menu_add" />
+
+
 </menu>
