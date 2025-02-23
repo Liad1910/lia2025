@@ -84,25 +84,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
+
         if (id == R.id.action_home) {
             Toast.makeText(this, "עברתם לדף הראשי", Toast.LENGTH_SHORT).show();
+            return true;
 
         } else if (id == R.id.action_page1) {
             Toast.makeText(this, "עברתם לדף אחד", Toast.LENGTH_SHORT).show();
+            return true;
+
+        } else if (id == R.id.new_item) {
+
+            Intent intent = new Intent(this, NewActivity.class);
+            startActivity(intent);
+            return true;
 
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
 
-        return true;
-    }
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.new_item) {
-            Intent intent = new Intent(this, NewActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onContextItemSelected(item);
-    }
 }
