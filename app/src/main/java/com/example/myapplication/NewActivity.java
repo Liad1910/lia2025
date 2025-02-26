@@ -15,7 +15,6 @@ public class NewActivity extends AppCompatActivity {
 
     private ImageView timerImage;
 
-
     final int[] images = {
             R.drawable.number_5,
             R.drawable.number_4,
@@ -30,15 +29,14 @@ public class NewActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new);
 
+
+        timerImage = findViewById(R.id.timer_Image);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-
-
-
 
         new CountDownTimer(5000, 1000) {
             int i = 0;

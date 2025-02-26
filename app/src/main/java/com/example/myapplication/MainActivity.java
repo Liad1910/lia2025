@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-
         if (id == R.id.action_home) {
             Toast.makeText(this, "עברתם לדף הראשי", Toast.LENGTH_SHORT).show();
             return true;
@@ -94,14 +93,16 @@ public class MainActivity extends AppCompatActivity {
             return true;
 
         } else if (id == R.id.new_item) {
-
             Intent intent = new Intent(this, NewActivity.class);
             startActivity(intent);
             return true;
 
+        } else if (id == R.id.share) {
+            Intent intent = new Intent(this, share.class);
+            startActivity(intent);
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
-
 }
