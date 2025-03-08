@@ -6,11 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class share extends AppCompatActivity {
 
@@ -22,7 +18,6 @@ public class share extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_share);
 
         nameInput = findViewById(R.id.nameInput);
@@ -38,20 +33,20 @@ public class share extends AppCompatActivity {
         loadButton.setOnClickListener(v -> loadData());
         clearButton.setOnClickListener(v -> clearData());
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // טוען נתונים שהוזנו בעבר אם קיימים
+        loadData();
     }
 
     private void saveData() {
         String name = nameInput.getText().toString();
         String food = foodInput.getText().toString();
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("userName", name);
         editor.putString("favoriteFood", food);
         editor.apply();
+
+        resultText.setText("נתונים נשמרו בהצלחה!");
     }
 
     private void loadData() {
@@ -64,8 +59,9 @@ public class share extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+
         nameInput.setText("");
         foodInput.setText("");
-        resultText.setText("");
+        resultText.setText("הנתונים נמחקו!");
     }
 }
