@@ -25,6 +25,39 @@
             android:textSize="50dp"
             android:gravity="center"
             android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You should know"
+            android:textColor="#F7F4F8"
+            android:textSize="40dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Malki is king"
+            android:textColor="#F7F4F8"
+            android:textSize="37dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="and he is so hot🐦‍🔥🌋🥵🔥"
+            android:textColor="#F7F4F8"
+            android:textSize="34dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
     </LinearLayout>
 
     <!-- אזור הוספת התמונות הדינאמיות -->

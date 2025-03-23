@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
         button2 = findViewById(R.id.button2);
 
         button1.setOnClickListener(view ->
-                Toast.makeText(MainActivity.this, "you dumb", Toast.LENGTH_SHORT).show());
+                Toast.makeText(MainActivity.this, "you dumb🤤😋😫", Toast.LENGTH_SHORT).show());
         button2.setOnClickListener(view ->
-                Toast.makeText(MainActivity.this, "YOU SMART", Toast.LENGTH_SHORT).show());
+                Toast.makeText(MainActivity.this, "YOU ARE SMART😎🤓", Toast.LENGTH_SHORT).show());
 
         linear.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, activity_linear.class);
