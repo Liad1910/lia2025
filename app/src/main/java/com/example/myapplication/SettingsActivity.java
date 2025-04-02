@@ -1,43 +1,45 @@
 package com.example.myapplication;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private SwitchCompat musicSwitch;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // כפתור חזרה למיין אקטיביטי
-        Button btnBackToMain = findViewById(R.id.btnBackToMain);
-        btnBackToMain.setOnClickListener(view -> {
-            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish(); // מסיים את SettingsActivity כדי לא לצבור מסכים פתוחים
-        });
-
-        // חץ חזרה בסרגל העליון
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        // יצירת SharedPreferences
+        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         musicSwitch = findViewById(R.id.music_switch);
-        musicSwitch.setChecked(MainActivity.isMusicPlaying);
+
+        // טעינת מצב הכפתור האחרון
+        boolean isMusicOn = sharedPreferences.getBoolean("music_state", true);
+        musicSwitch.setChecked(isMusicOn);
+        MainActivity.isMusicPlaying = isMusicOn;
+
+        if (isMusicOn && MainActivity.mediaPlayer != null) {
+            MainActivity.mediaPlayer.start();
+        } else if (!isMusicOn && MainActivity.mediaPlayer != null) {
+            MainActivity.mediaPlayer.pause();
+        }
 
         musicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MainActivity.isMusicPlaying = isChecked;
+
                 if (isChecked) {
                     if (MainActivity.mediaPlayer != null) {
                         MainActivity.mediaPlayer.start();
@@ -47,16 +49,15 @@ public class SettingsActivity extends AppCompatActivity {
                         MainActivity.mediaPlayer.pause();
                     }
                 }
+
+                // שמירת המצב של הכפתור
+                editor.putBoolean("music_state", isChecked);
+                editor.apply();
             }
         });
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // סוגר את SettingsActivity וחוזר אחורה
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        // כפתור חזרה למיין אקטיביטי
+        Button btnBackToMain = findViewById(R.id.btnBackToMain);
+        btnBackToMain.setOnClickListener(v -> finish());
     }
 }

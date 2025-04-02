@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,11 +28,15 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout constraintLayout;
     public static MediaPlayer mediaPlayer;
     public static boolean isMusicPlaying = true;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        isMusicPlaying = sharedPreferences.getBoolean("music_state", true);
 
         constraintLayout = findViewById(R.id.constraintLayout);
         game = findViewById(R.id.game);
@@ -50,17 +54,20 @@ public class MainActivity extends AppCompatActivity {
             game.setEnabled(true);
         });
 
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
-            mediaPlayer.setLooping(true);
-        }
-
+        setupMediaPlayer();
         if (isMusicPlaying) {
             mediaPlayer.start();
         }
 
         showDialogButton.setOnClickListener(view -> showCustomDialog());
         initViews();
+    }
+
+    private void setupMediaPlayer() {
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
+            mediaPlayer.setLooping(true);
+        }
     }
 
     private void checkPermissions() {
