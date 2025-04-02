@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -25,10 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     Button button1, button2, linear, boy, game, taknonButton, showDialogButton;
     ConstraintLayout constraintLayout;
-    private MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
     public static boolean isMusicPlaying = true;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         showDialogButton = findViewById(R.id.showDialogButton);
 
         game.setEnabled(false);
-
-        // ✅ קריאה לבדוק הרשאות
         checkPermissions();
 
         taknonButton.setOnClickListener(view -> {
@@ -52,17 +49,20 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, TERMS_REQUEST_CODE);
             game.setEnabled(true);
         });
-        mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
-        mediaPlayer.setLooping(true);
+
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
+            mediaPlayer.setLooping(true);
+        }
+
         if (isMusicPlaying) {
             mediaPlayer.start();
         }
-        showDialogButton.setOnClickListener(view -> showCustomDialog());
 
+        showDialogButton.setOnClickListener(view -> showCustomDialog());
         initViews();
     }
 
-    // ✅ פונקציה לבדיקת הרשאות
     private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
@@ -73,11 +73,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ טיפול בתוצאה של בקשת הרשאות
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == PERMISSION_REQUEST_CODE) {
             boolean allGranted = true;
             for (int result : grantResults) {
@@ -86,10 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             }
-
             if (!allGranted) {
                 Toast.makeText(this, "לא ניתן להשתמש באפליקציה ללא הרשאות מתאימות", Toast.LENGTH_LONG).show();
-                finish(); // סגירת האפליקציה אם אין הרשאות
+                finish();
             }
         }
     }
@@ -131,11 +128,9 @@ public class MainActivity extends AppCompatActivity {
         btnDialogLogin.setOnClickListener(view -> {
             String username = etUserName.getText().toString();
             String password = etPassword.getText().toString();
-
             Toast.makeText(MainActivity.this, "התחברת כ: " + username, Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
-
         dialog.show();
     }
 
@@ -148,20 +143,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.action_home) {
             Toast.makeText(this, "עברתם לדף הראשי", Toast.LENGTH_SHORT).show();
             return true;
-
         } else if (id == R.id.action_page1) {
             Toast.makeText(this, "עברתם לדף אחד", Toast.LENGTH_SHORT).show();
             return true;
-
         } else if (id == R.id.new_item) {
             Intent intent = new Intent(this, NewActivity.class);
             startActivity(intent);
             return true;
-
         } else if (id == R.id.share) {
             Intent intent = new Intent(this, share.class);
             startActivity(intent);
@@ -170,10 +161,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        }else {
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

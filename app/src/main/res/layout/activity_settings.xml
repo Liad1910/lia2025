@@ -13,4 +13,12 @@
         android:textSize="18sp">
 
     </androidx.appcompat.widget.SwitchCompat>
+
+    <Button
+        android:id="@+id/btnBackToMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="חזור לדף הראשי"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
 </LinearLayout>
