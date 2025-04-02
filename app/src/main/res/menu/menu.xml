@@ -13,16 +13,20 @@
         android:orderInCategory="100"
         app:showAsAction="never"/>
 
-        <item
-            android:id="@+id/new_item"
-            android:title="New Item"
-            android:icon="@android:drawable/ic_menu_add" />
-<item
-   android:id="@+id/share"
-    android:title="שייר"
-    android:orderInCategory="100"
-    app:showAsAction="never">
+    <item
+        android:id="@+id/new_item"
+        android:title="New Item"
+        android:icon="@android:drawable/ic_menu_add" />
 
-</item>
+    <item
+        android:id="@+id/share"
+        android:title="שייר"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_settings"
+        android:title="הגדרות"
+        android:icon="@android:drawable/ic_menu_preferences"
+        app:showAsAction="always"/>
 </menu>

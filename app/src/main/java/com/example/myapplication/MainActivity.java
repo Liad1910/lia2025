@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
     Button button1, button2, linear, boy, game, taknonButton, showDialogButton;
     ConstraintLayout constraintLayout;
+    private MediaPlayer mediaPlayer;
+    public static boolean isMusicPlaying = true;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, TERMS_REQUEST_CODE);
             game.setEnabled(true);
         });
-
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
+        mediaPlayer.setLooping(true);
+        if (isMusicPlaying) {
+            mediaPlayer.start();
+        }
         showDialogButton.setOnClickListener(view -> showCustomDialog());
 
         initViews();
@@ -157,8 +166,20 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, share.class);
             startActivity(intent);
             return true;
-        } else {
+        } else if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }else {
             return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 }
