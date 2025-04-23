@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,22 +14,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.mlkit.vision.documentscanner.DocumentPage;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanning;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanner;
+
 public class MainActivity extends AppCompatActivity {
     private static final int START_GAME = 222;
     private static final int TERMS_REQUEST_CODE = 1;
     private static final int PERMISSION_REQUEST_CODE = 100;
 
-    Button button1, button2, linear, boy, game, taknonButton, showDialogButton;
+    Button button1, button2, linear, boy, game, taknonButton, showDialogButton, scanButton;
     ConstraintLayout constraintLayout;
     public static MediaPlayer mediaPlayer;
     public static boolean isMusicPlaying = true;
     private SharedPreferences sharedPreferences;
+    private ActivityResultLauncher<IntentSenderRequest> scannerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         linear = findViewById(R.id.linear);
         boy = findViewById(R.id.boy);
         showDialogButton = findViewById(R.id.showDialogButton);
+        scanButton = findViewById(R.id.scanButton);
 
         game.setEnabled(false);
         checkPermissions();
@@ -61,6 +73,55 @@ public class MainActivity extends AppCompatActivity {
 
         showDialogButton.setOnClickListener(view -> showCustomDialog());
         initViews();
+        setupScanner();
+    }
+
+    private void setupScanner() {
+        scannerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartIntentSenderForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        GmsDocumentScanningResult scanningResult = GmsDocumentScanningResult.fromActivityResultIntent(data);
+
+                        if (scanningResult.getPages() != null) {
+                            for (DocumentPage page : scanningResult.getPages()) {
+                                Uri imageUri = page.getImageUri();
+                                Toast.makeText(this, "תמונה נסרקה: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        if (scanningResult.getPdf() != null) {
+                            Uri pdfUri = scanningResult.getPdf().getUri();
+                            int pageCount = scanningResult.getPdf().getPageCount();
+                            Toast.makeText(this, "PDF עם " + pageCount + " עמודים", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, "סריקה בוטלה", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        scanButton.setOnClickListener(v -> {
+            GmsDocumentScannerOptions options = new GmsDocumentScannerOptions.Builder()
+                    .setGalleryImportAllowed(false)
+                    .setPageLimit(5)
+                    .setResultFormats(
+                            GmsDocumentScannerOptions.RESULT_FORMAT_JPEG,
+                            GmsDocumentScannerOptions.RESULT_FORMAT_PDF)
+                    .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
+                    .build();
+
+            GmsDocumentScanner scanner = GmsDocumentScanning.getClient(options);
+
+            scanner.getStartScanIntent(MainActivity.this)
+                    .addOnSuccessListener(intentSender -> {
+                        IntentSenderRequest request = new IntentSenderRequest.Builder(intentSender).build();
+                        scannerLauncher.launch(request);
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(MainActivity.this, "שגיאה בהפעלת הסורק", Toast.LENGTH_SHORT).show();
+                    });
+        });
     }
 
     private void setupMediaPlayer() {
